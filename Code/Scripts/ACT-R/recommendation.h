@@ -15,7 +15,8 @@
 
 #define PRECISION 0.9
 #define DECAY_FACTOR 0.5
-#define MIN_FREQ 30
+#define MIN_FREQ 15
+#define MAX_HASH_ENTRIES 100000
 
 using namespace std;
 using namespace __gnu_cxx;

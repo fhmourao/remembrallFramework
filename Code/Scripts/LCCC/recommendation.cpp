@@ -66,11 +66,13 @@ float deriveSimilarity(int item1, int item2, HashOfHashes &trainingData, HashOfH
 	if( (prob1 > 0.0) && (prob2 > 0.0) )
 		similarity = log(prob1/prob2);
 	
-	if( (numOccItem1 > MIN_FREQ) || (numOccItem2 > MIN_FREQ) ){
-		if( item1 < item2 )
-			itemsSimilarity[item1][item2] = similarity;
-		else
-			itemsSimilarity[item2][item1] = similarity;
+	if(itemsSimilarity.size() < MAX_HASH_ENTRIES){
+		if( (numOccItem1 > MIN_FREQ) && (numOccItem2 > MIN_FREQ) ){
+			if( item1 < item2 )
+				itemsSimilarity[item1][item2] = similarity;
+			else
+				itemsSimilarity[item2][item1] = similarity;
+		}
 	}
 
 	return similarity;

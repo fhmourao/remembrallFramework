@@ -49,6 +49,7 @@ void User::setUserHistory(int trainingUser, std::ifstream &inputFile){
 	int numTimeUnits;
 	int vectorSize;
 	
+	this->historySize = 0;
 	this->consumptionHistory.clear();
 	if(!inputFile.eof()) {
 		getline(inputFile, line);
