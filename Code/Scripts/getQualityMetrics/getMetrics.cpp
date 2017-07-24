@@ -252,11 +252,14 @@ float calculatePearsonSimilarity(int firstItem, int secondItem, HashOfHashes &it
 
 float retrieveItemsSimilarity(int item1, int item2, HashOfHashes &hashSimilarity, HashOfHashes &itemRatings){
 	int firstItem = item1;
+	int numOccItem1 = 0;
+	int numOccItem2 = 0;
 	int secondItem = item2;
 	float similarity;
 	
 	HashOfHashes::iterator itr1;
 	Hash::iterator itr2;
+	HashOfHashes::iterator itr3;
 	
 	if(item1 > item2){
 		firstItem = item2;
@@ -275,10 +278,20 @@ float retrieveItemsSimilarity(int item1, int item2, HashOfHashes &hashSimilarity
 	//calcula nova similaridade
 	similarity = calculatePearsonSimilarity(firstItem, secondItem, itemRatings);
 	
+	//verify whether both item exist in the training set
+	itr1 = itemRatings.find(firstItem);
+	itr3 = itemRatings.find(secondItem);
+	if( itr1 != itemRatings.end() )
+		numOccItem1 = itemRatings[firstItem].size();
+	if( itr3 == itemRatings.end() )
+		numOccItem2 = itemRatings[secondItem].size();
+	
 	//atualiza similaridade em estrutura compartilhada
-	pthread_mutex_lock( &mutex );
-		hashSimilarity[firstItem][secondItem] = similarity;
-	pthread_mutex_unlock( &mutex );
+	if( (hashSimilarity.size() < MAX_HASH_ENTRIES) && (numOccItem1 > MIN_FREQ) && (numOccItem2 > MIN_FREQ) ){
+		pthread_mutex_lock( &mutex );
+			hashSimilarity[firstItem][secondItem] = similarity;
+		pthread_mutex_unlock( &mutex );
+	}
 
 	return similarity;
 }

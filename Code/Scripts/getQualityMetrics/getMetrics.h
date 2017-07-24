@@ -18,6 +18,9 @@
 
 using namespace std;
 
+#define MIN_FREQ 15
+#define MAX_HASH_ENTRIES 100000
+
 typedef std::unordered_map<int, float> Hash;
 typedef std::unordered_map<int, Hash> HashOfHashes;
 
